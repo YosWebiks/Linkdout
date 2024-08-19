@@ -16,12 +16,15 @@ namespace Linkdout.Controllers
 
         public PostController(PostService _postService) { postService = _postService; }
 
+        //Get All Posts
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<PostListDTO>> getAllPosts()
         {
             return Ok(await postService.getAll());
         }
+
+        //Get Single Post
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -30,6 +33,29 @@ namespace Linkdout.Controllers
         {
             return Ok(await postService.getPostById(id));
         }
+
+
+        //Create New Post
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> CreatePost([FromBody] NewPostDTO req)
+        {
+            bool res = postService.addNewPost(req);
+            if (res)
+            {
+                return Created();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        //Edit Post
+
+        //Delete Post
+
 
 
     }
