@@ -9,9 +9,9 @@ namespace Linkdout.Services
     {
         private DataLayer db;
         public PostService(DataLayer _db) { db = _db; }
-        public async Task<PostListDTO> getAll()
+        public async Task<List<PostModel>> getAll()
         {
-            return db.Posts.Include(p => p.user).ToList() as PostListDTO;
+            return db.Posts.Include(p => p.user).ToList();
         }
 
         public async Task<PostModel> getPostById(int id)
@@ -31,6 +31,29 @@ namespace Linkdout.Services
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        public async Task<string> editPostBody(int postId, string newBody)
+        {
+            PostModel post = db.Posts.Find(postId);
+            string oldBody = post.body;
+            post.body = newBody;
+            db.SaveChanges();
+            return oldBody;
+        }
+        public async Task<int> deletePost(int postId)
+        {
+            try
+            {
+                PostModel post = db.Posts.Find(postId);
+                db.Posts.Remove(post);
+                db.SaveChanges();
+                return post.id;
+            }
+            catch (Exception)
+            {
+                return -1;
             }
         }
     }

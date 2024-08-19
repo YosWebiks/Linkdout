@@ -41,7 +41,7 @@ namespace Linkdout.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreatePost([FromBody] NewPostDTO req)
         {
-            bool res = postService.addNewPost(req);
+            bool res = await postService.addNewPost(req);
             if (res)
             {
                 return Created();
@@ -53,9 +53,26 @@ namespace Linkdout.Controllers
         }
 
         //Edit Post
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> editPost([FromBody] EditPostDTO req)
+        {
+            string oldBody = await postService.editPostBody(req.postId, req.newBody);
+            return oldBody != String.Empty ? Ok(oldBody) : NotFound();
+
+        }
 
         //Delete Post
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<int>> deletePost(int id)
+        {
+            int res = await postService.deletePost(id);
+            return res != -1 ? Ok(res) : NotFound();
 
+        }
 
 
     }
