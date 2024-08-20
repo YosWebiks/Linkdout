@@ -73,7 +73,5 @@ namespace Linkdout.Controllers
             return res != -1 ? Ok(res) : NotFound();
 
         }
-
-
     }
 }

@@ -12,11 +12,12 @@ namespace Linkdout.Controllers
     [Produces("application/json")]
     public class UserController : ControllerBase
     {
-        private readonly UserService userService;
-        public UserController(UserService _userService)
+        private UserService userService;
+        private JwtService jwtService;
+        public UserController(UserService _userService, JwtService _jwtService)
         {
             userService = _userService;
-
+            jwtService = _jwtService;
         }
 
         [HttpGet("{id}")]
@@ -42,6 +43,19 @@ namespace Linkdout.Controllers
             {
                 return BadRequest();
             }
+        }
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<string>> login([FromBody] UserModel user)
+        {
+            UserModel userFromDb = await userService.getUserByUserNameAndPassword(user.userName, user.UNHASHEDPassword);
+            if (userFromDb == null)
+            {
+                return Unauthorized("Invalid user name or password");
+            }
+            string token = jwtService.genJWToken(userFromDb);
+            return Ok(token);
         }
     }
 }
