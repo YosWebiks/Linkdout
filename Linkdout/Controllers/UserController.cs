@@ -50,7 +50,7 @@ namespace Linkdout.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<string>> login([FromBody] UserModel user)
         {
-            UserModel userFromDb = await userService.getUserByUserNameAndPassword(user.userName, user.UNHASHEDPassword);
+            UserModel userFromDb = await userService.getUserByUserNameAndPassword(user.userName, user.password);
             if (userFromDb == null)
             {
                 return Unauthorized("Invalid user name or password");
