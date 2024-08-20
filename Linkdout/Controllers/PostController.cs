@@ -1,6 +1,7 @@
 ﻿using Linkdout.DTO;
 using Linkdout.Moodels;
 using Linkdout.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +38,7 @@ namespace Linkdout.Controllers
 
         //Create New Post
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreatePost([FromBody] NewPostDTO req)

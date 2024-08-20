@@ -44,6 +44,7 @@ namespace Linkdout.Controllers
                 return BadRequest();
             }
         }
+
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

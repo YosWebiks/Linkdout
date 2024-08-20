@@ -32,7 +32,6 @@ namespace Linkdout.Services
                 signingCredentials: crd,
                 claims: claims
                 );
-
             // get token string (write token)
             string tkn = new JwtSecurityTokenHandler().WriteToken(token);
             // return the token string
